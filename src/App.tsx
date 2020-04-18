@@ -1,24 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { Gifs, useGiphy } from './useGiphy';
+
 import './App.css';
 
 function App() {
+  const [search, setSearch] = useState('');
+  const [query, setQuery] = useState<string>('');
+  const [gifs, loading] = useGiphy(query);
+
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setQuery(search);
+  }
+
+  function onChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setSearch(e.target.value);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Giphy Search</h1>
+      <form onSubmit={onSubmit}>
+        <input
+          value={search}
+          onChange={onChange}
+          placeholder="What are you looking for?"
+        />
+        <button type="submit">Search</button>
+      </form>
+      <br />
+      {loading ? <h2>GIMME GIFS!</h2> : (gifs as Gifs).map(gif => (
+        <video autoPlay loop key={String(gif)} src={String(gif)} />
+      ))}
     </div>
   );
 }
