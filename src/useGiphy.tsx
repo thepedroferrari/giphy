@@ -14,7 +14,7 @@ interface Item {
 }
 
 export function useGiphy(query: string) {
-  const [results, setResults] = useState<any[]>([]);
+  const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
